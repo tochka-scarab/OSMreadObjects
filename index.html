@@ -1,0 +1,54 @@
+﻿<!DOCTYPE html>
+<html>
+
+	<head>Чтение из OpenStreetMap и запись в файл
+		<title>OSM read&write</title>
+
+		<!-- Добавляем файлы стилей CSS для библиотеки -->
+		<link rel="stylesheet" href="leaflet.css"/>
+
+		<!-- Добавляем ссылку на JS-скрипт библиотеки -->
+		<script src="leaflet.js"></script>
+
+	</head>
+
+	<body>
+
+
+		<p>
+		<p>
+		<div id="map" style="width: 1250px; height: 550px;"></div>
+
+		<script>
+
+			//Определяем карту, координаты центра и начальный масштаб
+			var map = L.map('map').setView([49.93178994227235, 36.43510580062866], 17);
+
+			//Добавляем на нашу карту слой OpenStreetMap
+			L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', 
+			{
+				attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+			}).addTo(map);
+
+			// Добавляем вывод координат по клику
+			map.on('click', onMapClick);
+			var popup = new L.Popup();
+			function onMapClick(e) 
+			{
+
+				var latlngStr = 'X = ' + e.latlng.lat.toFixed(14) + '<br> Y = ' + e.latlng.lng.toFixed(14);
+
+				popup.setLatLng(e.latlng);
+				
+				vyborStr = '<p><input name="vybor" type="radio" value="knp" onclick="check(0)"> КНП</p>' + 
+						   '<p><input name="vybor" type="radio" value="tcel" onclick="check(1)"> Цель</p>' +
+						   '<p><input type="submit" value="Выбрать" onclick/onchange="check()"></p>';
+
+				popup.setContent('Координаты точки <br>' + latlngStr + '<br>' + vyborStr);
+
+				map.openPopup(popup);
+			}
+		</script>
+
+    </body>
+</html>
