@@ -38,13 +38,32 @@
 
 				var latlngStr = 'X = ' + e.latlng.lat.toFixed(14) + '<br> Y = ' + e.latlng.lng.toFixed(14);
 
+				// 1. Создаём новый объект XMLHttpRequest
+				var xhr = new XMLHttpRequest();
+				// 2. Конфигурируем его: GET-запрос на nominantim
+				var zapros = 'http://nominatim.openstreetmap.org/reverse?format=json&lat=' + e.latlng.lat.toFixed(14) + '&lon=' + e.latlng.lng.toFixed(14) + '&zoom=18&addressdetails=1';
+				xhr.open('GET', zapros, false);
+				// 3. Отсылаем запрос
+				xhr.send();
+				// 4. Если код ответа сервера не 200, то это ошибка
+				if (xhr.status != 200)
+				{
+					// обработать ошибку
+					alert( xhr.status + ': ' + xhr.statusText ); // пример вывода: 404: Not Found
+				}
+				else
+				{
+					// вывести результат
+					;//alert( xhr.responseText ); // responseText -- текст ответа.
+				}
+
 				popup.setLatLng(e.latlng);
 				
 				vyborStr = '<p><input name="vybor" type="radio" value="knp" onclick="check(0)"> КНП</p>' + 
 						   '<p><input name="vybor" type="radio" value="tcel" onclick="check(1)"> Цель</p>' +
 						   '<p><input type="submit" value="Выбрать" onclick/onchange="check()"></p>';
 
-				popup.setContent('Координаты точки <br>' + latlngStr + '<br>' + vyborStr);
+				popup.setContent('Координаты точки <br>' + latlngStr + '<br>' + vyborStr + xhr.responseText);
 
 				map.openPopup(popup);
 			}
