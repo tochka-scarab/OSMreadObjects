@@ -19,6 +19,10 @@
 		<p>
 		<div id="map" style="width: 1250px; height: 550px;"></div>
 
+		<p><b>Данные объекта:</b></p>
+		<p><textarea rows="13" cols="150%" name="objectOSM" id = "objectOSM"></textarea></p>
+		<p><input type="submit" value="Записать"></p>
+
 		<script>
 
 			//Определяем карту, координаты центра и начальный масштаб
@@ -54,8 +58,27 @@
 				else
 				{
 					// вывести результат
-					;//alert( xhr.responseText ); // responseText -- текст ответа.
+					var textObjectOSM = xhr.responseText;//alert( xhr.responseText ); // responseText -- текст ответа.
 				}
+
+				document.getElementById('objectOSM').value = textObjectOSM;
+				var begin = textObjectOSM.indexOf('boundingbox') + 15;
+				var end = textObjectOSM.length - 3;
+				var coordObject = textObjectOSM.substring(begin, end);
+
+				var arrayCoord = coordObject.split('","');
+				
+				//alert(coordObject + '<p>' + arrayCoord[0] + '<p>' + arrayCoord[1] + '<p>' + arrayCoord[2] + '<p>' + arrayCoord[3]);
+
+				// Создаём красный полигон с координатами	
+				var x1 = arrayCoord[0];
+				var x2 = arrayCoord[1];
+				var y1 = arrayCoord[2];
+				var y2 = arrayCoord[3];
+				var latlngs = [[x1, y1],[x1, y2],[x2, y2],[x2, y1]];
+				var polygon = L.polygon(latlngs, {color: 'red'}).addTo(map);
+				// зумим карту к полигону
+				map.fitBounds(polygon.getBounds());
 
 				popup.setLatLng(e.latlng);
 				
@@ -63,7 +86,7 @@
 						   '<p><input name="vybor" type="radio" value="tcel" onclick="check(1)"> Цель</p>' +
 						   '<p><input type="submit" value="Выбрать" onclick/onchange="check()"></p>';
 
-				popup.setContent('Координаты точки <br>' + latlngStr + '<br>' + vyborStr + xhr.responseText);
+				popup.setContent('Координаты точки <br>' + latlngStr + '<br>' + vyborStr);
 
 				map.openPopup(popup);
 			}
