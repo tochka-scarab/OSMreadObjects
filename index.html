@@ -61,7 +61,6 @@
 					var textObjectOSM = xhr.responseText;//alert( xhr.responseText ); // responseText -- текст ответа.
 				}
 
-				document.getElementById('objectOSM').value = textObjectOSM;
 				var begin = textObjectOSM.indexOf('boundingbox') + 15;
 				var end = textObjectOSM.length - 3;
 				var coordObject = textObjectOSM.substring(begin, end);
@@ -75,6 +74,10 @@
 				var x2 = arrayCoord[1];
 				var y1 = arrayCoord[2];
 				var y2 = arrayCoord[3];
+				var xc = (+x2-(+x1))/2;
+				xc = +x1 + xc;
+				var yc = (+y2-(+y1))/2 ;
+				yc = +y1 + yc;
 				var latlngs = [[x1, y1],[x1, y2],[x2, y2],[x2, y1]];
 				var polygon = L.polygon(latlngs, {color: 'red'}).addTo(map);
 				// зумим карту к полигону
@@ -89,6 +92,8 @@
 				popup.setContent('Координаты точки <br>' + latlngStr + '<br>' + vyborStr);
 
 				map.openPopup(popup);
+				
+				document.getElementById('objectOSM').value = textObjectOSM + ' Xц = ' + xc + ' Yц = ' + yc;
 			}
 		</script>
 
