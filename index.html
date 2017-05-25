@@ -41,6 +41,10 @@
 			var popup = new L.Popup();
 			function onMapClick(e) 
 			{
+				function check(regime)
+				{
+					close();
+				}
 
 				var latlngStr = 'X = ' + e.latlng.lat.toFixed(14) + '<br> Y = ' + e.latlng.lng.toFixed(14);
 
