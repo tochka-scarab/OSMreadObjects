@@ -41,11 +41,6 @@
 			var popup = new L.Popup();
 			function onMapClick(e) 
 			{
-				function check(popup)
-				{
-					popup.close();
-				}
-
 				var latlngStr = 'X = ' + e.latlng.lat.toFixed(14) + '<br> Y = ' + e.latlng.lng.toFixed(14);
 
 				// 1. Создаём новый объект XMLHttpRequest
@@ -92,10 +87,11 @@
 				popup.setLatLng(e.latlng);
 				
 				vyborStr = '<p><input name="vybor" type="radio" value="knp"> КНП</p>' + 
-						   '<p><input name="vybor" type="radio" value="tcel"> Цель</p>' +
-						   '<p><input type="submit" value="Выбрать" onclick="check(popup)"></p>';
+						   '<p><input name="vybor" type="radio" value="tcel"> Цель</p>'></p>';
 
 				popup.setContent('Координаты точки <br>' + latlngStr + '<br>' + vyborStr);
+				
+				popup.closeButton();
 
 				map.openPopup(popup);
 				
